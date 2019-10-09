@@ -15,6 +15,8 @@ public class Player : MonoBehaviour
     [Tooltip("Faster when closer to zero.")]
     private float _FireRate = 0.15f;
     private float _canFire = -1f;
+    [SerializeField]
+    private int _lives = 3;
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
@@ -59,5 +61,15 @@ public class Player : MonoBehaviour
             Vector3 laserSpawnPosition = transform.position + new Vector3(0, _laserPositionOffset, 0);
             Instantiate(_laserPrefab, laserSpawnPosition, Quaternion.identity);
      }
+
+    public void Damage()
+    {
+        _lives--;
+
+        if (_lives < 1)
+        {
+            Destroy(this.gameObject);
+        }
+    }
 }
 
