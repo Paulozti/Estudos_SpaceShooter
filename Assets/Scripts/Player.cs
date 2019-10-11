@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
     [Tooltip("Select laser prefab.")]
     private GameObject _laserPrefab;
     [SerializeField]
+    private GameObject _LaserContainer;
+    [SerializeField]
     [Tooltip("Distance the laser is created from the player.")]
     private float _laserPositionOffset = 0.8f;
     [SerializeField]
@@ -17,9 +19,17 @@ public class Player : MonoBehaviour
     private float _canFire = -1f;
     [SerializeField]
     private int _lives = 3;
+
+    private SpawnManager _spawner;
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
+        _spawner = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
+
+        if(_spawner == null)
+        {
+            Debug.LogError("Spawn manager is NULL.");
+        }
     }
 
     
@@ -57,9 +67,10 @@ public class Player : MonoBehaviour
     void FireLaser() 
     {
         // Time.time pega o tempo em que o game está rodando
-            _canFire = Time.time + _FireRate;
-            Vector3 laserSpawnPosition = transform.position + new Vector3(0, _laserPositionOffset, 0);
-            Instantiate(_laserPrefab, laserSpawnPosition, Quaternion.identity);
+        _canFire = Time.time + _FireRate;
+        Vector3 laserSpawnPosition = transform.position + new Vector3(0, _laserPositionOffset, 0);
+        GameObject newLaser = Instantiate(_laserPrefab, laserSpawnPosition, Quaternion.identity);
+        newLaser.transform.parent = _LaserContainer.transform;    
      }
 
     public void Damage()
@@ -68,6 +79,7 @@ public class Player : MonoBehaviour
 
         if (_lives < 1)
         {
+            _spawner.onPlayerDeath();
             Destroy(this.gameObject);
         }
     }
