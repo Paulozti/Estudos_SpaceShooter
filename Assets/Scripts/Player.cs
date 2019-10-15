@@ -11,14 +11,18 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _LaserContainer;
     [SerializeField]
+    private GameObject _TripleLaserPrefab;
     [Tooltip("Distance the laser is created from the player.")]
-    private float _laserPositionOffset = 0.8f;
+    private float _laserPositionOffset = 1f;
     [SerializeField]
     [Tooltip("Faster when closer to zero.")]
     private float _FireRate = 0.15f;
     private float _canFire = -1f;
     [SerializeField]
     private int _lives = 3;
+    [SerializeField]
+    private bool _isTripleShotActive = true;
+
 
     private SpawnManager _spawner;
     void Start()
@@ -69,7 +73,16 @@ public class Player : MonoBehaviour
         // Time.time pega o tempo em que o game está rodando
         _canFire = Time.time + _FireRate;
         Vector3 laserSpawnPosition = transform.position + new Vector3(0, _laserPositionOffset, 0);
-        GameObject newLaser = Instantiate(_laserPrefab, laserSpawnPosition, Quaternion.identity);
+        GameObject newLaser;
+        if (_isTripleShotActive)
+        {
+            newLaser = Instantiate(_TripleLaserPrefab, laserSpawnPosition, Quaternion.identity);
+        }
+        else
+        {
+            newLaser = Instantiate(_laserPrefab, laserSpawnPosition, Quaternion.identity);
+        }
+        
         newLaser.transform.parent = _LaserContainer.transform;    
      }
 
@@ -82,6 +95,11 @@ public class Player : MonoBehaviour
             _spawner.onPlayerDeath();
             Destroy(this.gameObject);
         }
+    }
+
+    public void GetTripleShot()
+    {
+        _isTripleShotActive = true;
     }
 }
 
