@@ -6,6 +6,7 @@ public class PowerUp : MonoBehaviour
 {
     [SerializeField]
     private float _MoveSpeed = 3;
+    private bool _TripleShotIsActive = false;
 
     // Start is called before the first frame update
     void Start()
@@ -34,7 +35,8 @@ public class PowerUp : MonoBehaviour
             }
             else
             {
-                player.GetTripleShot();
+                player.ActivateTripleShot();
+                _TripleShotIsActive = true;
                 Destroy(this.gameObject);
             }
             

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class Player : MonoBehaviour
 {
@@ -22,6 +24,8 @@ public class Player : MonoBehaviour
     private int _lives = 3;
     [SerializeField]
     private bool _isTripleShotActive = true;
+    [SerializeField]
+    private float _TripleShotCooldown = 5;
 
 
     private SpawnManager _spawner;
@@ -34,6 +38,7 @@ public class Player : MonoBehaviour
         {
             Debug.LogError("Spawn manager is NULL.");
         }
+        
     }
 
     
@@ -82,8 +87,10 @@ public class Player : MonoBehaviour
         {
             newLaser = Instantiate(_laserPrefab, laserSpawnPosition, Quaternion.identity);
         }
-        
-        newLaser.transform.parent = _LaserContainer.transform;    
+        if (newLaser.transform.parent != null)
+        {
+            newLaser.transform.parent = _LaserContainer.transform;
+        }
      }
 
     public void Damage()
@@ -97,9 +104,16 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void GetTripleShot()
+    public void ActivateTripleShot()
     {
         _isTripleShotActive = true;
+        StartCoroutine(TripleShotCooldown());
+    }
+
+    IEnumerator TripleShotCooldown()
+    {
+         yield return new WaitForSeconds(_TripleShotCooldown);
+        _isTripleShotActive = false;
     }
 }
 
