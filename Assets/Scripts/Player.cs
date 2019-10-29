@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -23,9 +22,11 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _lives = 3;
     [SerializeField]
-    private bool _isTripleShotActive = true;
+    private bool _isTripleShotActive = false, _isSpeedActive = false, _isShieldActive = false;
     [SerializeField]
-    private float _TripleShotCooldown = 5;
+    private float _TripleShotCooldown = 5, _SpeedCooldown = 5, _ShieldCooldown = 5;
+    [SerializeField]
+    private float _SpeedPowerUpMultiplier= 2;
 
 
     private SpawnManager _spawner;
@@ -58,8 +59,15 @@ public class Player : MonoBehaviour
         float axisY = Input.GetAxis("Vertical");
 
         Vector3 direction = new Vector3(axisX, axisY, 0);
-
-        transform.Translate(direction * _MoveSpeed * Time.deltaTime);
+        if (_isSpeedActive)
+        {
+            transform.Translate(direction * _MoveSpeed * _SpeedPowerUpMultiplier * Time.deltaTime);
+        }
+        else
+        {
+            transform.Translate(direction * _MoveSpeed * Time.deltaTime);
+        }
+        
 
         //Melhor maneira, utilizando Mathf.Clamp para setar um minimo e maximo valor.
 
@@ -104,16 +112,47 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void ActivateTripleShot()
+    public void ActivatePowerUp(int ID)
     {
-        _isTripleShotActive = true;
-        StartCoroutine(TripleShotCooldown());
+        if(ID == 0)
+        {
+            _isTripleShotActive = true;
+        }
+        else if(ID == 1)
+        {
+            _isSpeedActive = true;
+        }
+        else if(ID == 2)
+        {
+            _isShieldActive = true;
+            
+        }
+        StartCoroutine(PowerUpCooldown(ID));
     }
 
-    IEnumerator TripleShotCooldown()
+   
+    IEnumerator PowerUpCooldown(int ID)
     {
-         yield return new WaitForSeconds(_TripleShotCooldown);
-        _isTripleShotActive = false;
+        if(ID == 0)
+        {
+            yield return new WaitForSeconds(_TripleShotCooldown);
+            _isTripleShotActive = false;
+        }
+        else if(ID == 1)
+        {
+            yield return new WaitForSeconds(_SpeedCooldown);
+            _isSpeedActive = false;
+        }
+        else if(ID == 2)
+        {
+            yield return new WaitForSeconds(_ShieldCooldown);
+            _isShieldActive = false;
+        }
+        else
+        {
+            Debug.LogError("PowerUpID invalid.");
+        }
+         
     }
 }
 
