@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
     private GameObject _ShieldGameObject;
     private bool _isTripleShotActive = false, _isSpeedActive = false, _isShieldActive = false;
     [SerializeField]
-    private float _TripleShotCooldown = 5, _SpeedCooldown = 5, _ShieldCooldown = 5;
+    private float _TripleShotCooldown = 5, _SpeedCooldown = 5;
     [SerializeField]
     private float _SpeedPowerUpMultiplier= 2;
 
@@ -153,17 +153,6 @@ public class Player : MonoBehaviour
             yield return new WaitForSeconds(_SpeedCooldown);
             _isSpeedActive = false;
         }
-        else if(ID == 2)
-        {
-            yield return new WaitForSeconds(_ShieldCooldown);
-            _isShieldActive = false;
-            _ShieldGameObject.SetActive(false);
-        }
-        else
-        {
-            Debug.LogError("PowerUpID invalid.");
-        }
-         
     }
 }
 
