@@ -6,7 +6,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject _EnemyPrefab;
     [SerializeField]
-    private GameObject _TripleShotPowerUp, _SpeedPowerUp,_ShieldPowerUp;
+    private GameObject[] _powerUps;
     [SerializeField]
     private GameObject _EnemyContainer;
     [SerializeField]
@@ -38,32 +38,11 @@ public class SpawnManager : MonoBehaviour
     {
         while(_StopSpawning == false)
         {
-            GameObject newPowerUp = null;
             yield return new WaitForSeconds(Random.Range(_powerUpSpawnTimeLow,_powerUpSpawnTimeHigh));
             Vector3 position = new Vector3(Random.Range(-5.5f, 8.5f), 7.5f, 0);
-            int powerUp = Random.Range(0, 3);
-            Debug.Log(powerUp);
-            if (powerUp == 0)
-            {
-                 newPowerUp = Instantiate(_TripleShotPowerUp, position, Quaternion.identity);
-            }
-            else if(powerUp == 1)
-            {
-                newPowerUp = Instantiate(_SpeedPowerUp, position, Quaternion.identity);
-            }
-            else if(powerUp == 2)
-            {
-                newPowerUp = Instantiate(_ShieldPowerUp, position, Quaternion.identity);
-            }
-            if(newPowerUp != null)
-            {
-                newPowerUp.transform.parent = _PowerUpContainer.transform;
-            }
-            else
-            {
-                Debug.LogError("Random fail!");
-            }
-            
+            int randomPowerUp = Random.Range(0, _powerUps.Length);
+            GameObject newPowerUp = Instantiate(_powerUps[randomPowerUp], position, Quaternion.identity);
+            newPowerUp.transform.parent = _PowerUpContainer.transform;
         }
     }
 

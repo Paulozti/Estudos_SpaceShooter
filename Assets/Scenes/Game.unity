@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -272,12 +272,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _EnemyPrefab: {fileID: 1346907878944596375, guid: 1fe9d0d703689ca4a969515f8438a09d,
     type: 3}
-  _TripleShotPowerUp: {fileID: 1736533567329146147, guid: a24762d25256abf44b592d1e290af835,
-    type: 3}
-  _SpeedPowerUp: {fileID: 3135128127044478495, guid: 3b24c353e4e8cf34f8c729451989c710,
-    type: 3}
-  _ShieldPowerUp: {fileID: 337361823925101940, guid: c5985494e920180499d41153e4d35da5,
-    type: 3}
+  _powerUps:
+  - {fileID: 1736533567329146147, guid: a24762d25256abf44b592d1e290af835, type: 3}
+  - {fileID: 3135128127044478495, guid: 3b24c353e4e8cf34f8c729451989c710, type: 3}
+  - {fileID: 337361823925101940, guid: c5985494e920180499d41153e4d35da5, type: 3}
   _EnemyContainer: {fileID: 105761119}
   _PowerUpContainer: {fileID: 1003853097}
   _EnemySpawnTime: 5
