@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private int _lives = 3;
     [SerializeField]
+    private GameObject _ShieldGameObject;
     private bool _isTripleShotActive = false, _isSpeedActive = false, _isShieldActive = false;
     [SerializeField]
     private float _TripleShotCooldown = 5, _SpeedCooldown = 5, _ShieldCooldown = 5;
@@ -103,13 +104,22 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        _lives--;
-
-        if (_lives < 1)
+        if (_isShieldActive)
         {
-            _spawner.onPlayerDeath();
-            Destroy(this.gameObject);
+            _isShieldActive = false;
+            _ShieldGameObject.SetActive(false);
         }
+        else
+        {
+            _lives--;
+
+            if (_lives < 1)
+            {
+                _spawner.onPlayerDeath();
+                Destroy(this.gameObject);
+            }
+        }
+        
     }
 
     public void ActivatePowerUp(int ID)
@@ -125,7 +135,7 @@ public class Player : MonoBehaviour
         else if(ID == 2)
         {
             _isShieldActive = true;
-            
+            _ShieldGameObject.SetActive(true);
         }
         StartCoroutine(PowerUpCooldown(ID));
     }
@@ -147,6 +157,7 @@ public class Player : MonoBehaviour
         {
             yield return new WaitForSeconds(_ShieldCooldown);
             _isShieldActive = false;
+            _ShieldGameObject.SetActive(false);
         }
         else
         {
