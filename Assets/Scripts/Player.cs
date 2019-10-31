@@ -29,8 +29,11 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _SpeedPowerUpMultiplier= 2;
 
+    private int _score = 0;
 
     private SpawnManager _spawner;
+    private UImanager _uiManager;
+
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
@@ -40,7 +43,12 @@ public class Player : MonoBehaviour
         {
             Debug.LogError("Spawn manager is NULL.");
         }
+        _uiManager = GameObject.Find("Canvas").GetComponent<UImanager>();
         
+        if(_uiManager == null)
+        {
+            Debug.LogError("UI Manager is NULL.");
+        }
     }
 
     
@@ -153,6 +161,12 @@ public class Player : MonoBehaviour
             yield return new WaitForSeconds(_SpeedCooldown);
             _isSpeedActive = false;
         }
+    }
+
+    public void UpdateScore(int points)
+    {
+        _score += points;
+        _uiManager.GetComponent<UImanager>().UpdateScore(_score);
     }
 }
 
