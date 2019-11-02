@@ -10,7 +10,14 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
-        _destroyAnimation = gameObject.GetComponent<Animator>();
+        if(_player == null){
+            Debug.LogError("Player component is NULL");
+        }
+        _destroyAnimation = GetComponent<Animator>();
+        if (_destroyAnimation == null)
+        {
+            Debug.LogError("Animator component is NULL");
+        }
     }
     void Update()
     {
