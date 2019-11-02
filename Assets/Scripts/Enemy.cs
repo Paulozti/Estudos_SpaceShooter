@@ -28,11 +28,11 @@ public class Enemy : MonoBehaviour
         {
             if (_player != null)
             {
-                
                 _player.Damage();
-                
+                _destroyAnimation.SetTrigger("OnEnemyDeath");
+                _exploding = true;
             }
-            Destroy(this.gameObject);
+            StartCoroutine(OnDeath());
         }
         else if (other.tag == ("Laser"))
         {
@@ -53,7 +53,6 @@ public class Enemy : MonoBehaviour
         {
             yield return new WaitForSeconds(3f);
             Destroy(this.gameObject);
-            _exploding = false;
         }
         
     }
