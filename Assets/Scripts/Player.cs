@@ -29,6 +29,10 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _SpeedPowerUpMultiplier= 2;
 
+    [SerializeField]
+    private GameObject _rightDamage;
+    [SerializeField]
+    private GameObject _leftDamage;
     private int _score = 0;
 
     private SpawnManager _spawner;
@@ -121,7 +125,15 @@ public class Player : MonoBehaviour
         {
             _lives--;
             _uiManager.UpdateLives(_lives);
-            if (_lives < 1)
+            if(_lives == 2)
+            {
+                _rightDamage.SetActive(true);
+            }
+            else if(_lives == 1)
+            {
+                _leftDamage.SetActive(true);
+            }
+            else if (_lives < 1)
             {
                 _spawner.onPlayerDeath();
                 Destroy(this.gameObject);

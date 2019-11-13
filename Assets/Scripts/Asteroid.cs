@@ -5,19 +5,25 @@ using UnityEngine;
 public class Asteroid : MonoBehaviour
 {
     [SerializeField]
-    private float _rotateSpeed = 3;
-    [SerializeField]
-    private float _moveSpeed = 1;
-
+    private float _rotateSpeed = 6f;
+    
     [SerializeField]
     private GameObject _explosion;
     private GameObject _createdExplosion;
     private bool _notDestroyed = true;
+    private SpawnManager _spawnManager;
 
+    private void Start()
+    {
+        _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
+        if(_spawnManager == null)
+        {
+            Debug.LogError("SpanwManager is NULL.");
+        }
+    }
     void Update()
     {
         transform.Rotate(new Vector3(0, 0, _rotateSpeed) * Time.deltaTime);
-        transform.Translate(Vector3.down * _moveSpeed * Time.deltaTime);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -25,18 +31,9 @@ public class Asteroid : MonoBehaviour
         if (collision.tag == "Laser")
         {
             _createdExplosion = Instantiate(_explosion, transform.position, transform.rotation);
-            _moveSpeed = 0;
             Destroy(collision.gameObject);
-            StartCoroutine(WaitAndDestroy());
+            _spawnManager.StartSpawnming();
+            Destroy(this.gameObject, 1f);
         }
-    }
-
-    IEnumerator WaitAndDestroy()
-    {
-        while (_notDestroyed)
-        {
-            yield return new WaitForSeconds(3f);
-            Destroy(this.gameObject);
-       }
     }
 }
