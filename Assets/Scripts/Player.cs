@@ -28,6 +28,8 @@ public class Player : MonoBehaviour
     private float _TripleShotCooldown = 5, _SpeedCooldown = 5;
     [SerializeField]
     private float _SpeedPowerUpMultiplier= 2;
+    [SerializeField]
+    private AudioSource _deathAudioSource;
 
     [SerializeField]
     private GameObject _rightDamage;
@@ -38,8 +40,13 @@ public class Player : MonoBehaviour
     private SpawnManager _spawner;
     private UImanager _uiManager;
 
+    [SerializeField]
+    private AudioClip _shootLaserSound;
+    private AudioSource _audioSource;
+
     void Start()
     {
+        _audioSource = GetComponent<AudioSource>();
         transform.position = new Vector3(0, 0, 0);
         _spawner = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
 
@@ -53,6 +60,11 @@ public class Player : MonoBehaviour
         {
             Debug.LogError("UI Manager is NULL.");
         }
+
+        if(_audioSource == null)
+        {
+            Debug.LogError("Audio Source on player is NULL.");
+        }
     }
 
     
@@ -64,7 +76,7 @@ public class Player : MonoBehaviour
         {
             FireLaser();
         }
-    }
+    }   
 
     void CalculateMoviment() 
     {
@@ -112,6 +124,8 @@ public class Player : MonoBehaviour
         {
             newLaser.transform.parent = _LaserContainer.transform;
         }
+        _audioSource.clip = _shootLaserSound;
+        _audioSource.Play();
      }
 
     public void Damage()
@@ -136,6 +150,7 @@ public class Player : MonoBehaviour
             else if (_lives < 1)
             {
                 _spawner.onPlayerDeath();
+                _deathAudioSource.Play();
                 Destroy(this.gameObject);
             }
         }
