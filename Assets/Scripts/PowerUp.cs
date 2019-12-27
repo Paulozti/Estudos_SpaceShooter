@@ -6,6 +6,9 @@ public class PowerUp : MonoBehaviour
     private float _MoveSpeed = 3;
     [SerializeField]
     private int _powerUpID;
+
+    [SerializeField]
+    private AudioClip _powerUpClip;
     // PowerUp IDs
     // 0 = Triple Shot
     // 1 = Speed
@@ -32,6 +35,7 @@ public class PowerUp : MonoBehaviour
             else
             {
                 player.ActivatePowerUp(_powerUpID);
+                AudioSource.PlayClipAtPoint(_powerUpClip, transform.position);
                 Destroy(this.gameObject);
             }
         }

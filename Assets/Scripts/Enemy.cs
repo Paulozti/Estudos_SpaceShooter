@@ -58,7 +58,9 @@ public class Enemy : MonoBehaviour
     {
         while (_exploding)
         {
+            GetComponent<AudioSource>().Play();
             yield return new WaitForSeconds(3f);
+            GetComponent<AudioSource>().Stop();
             Destroy(this.gameObject);
         }
         

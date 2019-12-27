@@ -28,6 +28,8 @@ public class Player : MonoBehaviour
     private float _TripleShotCooldown = 5, _SpeedCooldown = 5;
     [SerializeField]
     private float _SpeedPowerUpMultiplier= 2;
+    [SerializeField]
+    private AudioSource _deathAudioSource;
 
     [SerializeField]
     private GameObject _rightDamage;
@@ -148,6 +150,7 @@ public class Player : MonoBehaviour
             else if (_lives < 1)
             {
                 _spawner.onPlayerDeath();
+                _deathAudioSource.Play();
                 Destroy(this.gameObject);
             }
         }
